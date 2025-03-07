@@ -14,6 +14,7 @@ import PublisherDetails from "./pages/PublisherDetails/PublisherDetails"
 import TagGames from "./pages/TagGames/TagGames"
 import GenreGames from "./pages/GenreGames/GenreGames.jsx"
 import ErrorPage from "./pages/ErrorPage/ErrorPage"
+import Favorites from "./pages/Favorites/Favorites"
 
 function AppLayout() {
   return (
@@ -37,6 +38,7 @@ const router = createBrowserRouter([
       { path: "/publisher/:id", element: <PublisherDetails /> },
       { path: "/tag/:tag", element: <TagGames /> },
       { path: "/genre/:genre", element: <GenreGames /> },
+      { path: "/favorites", element: <Favorites /> },
     ],
   },
 ])

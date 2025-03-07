@@ -1,6 +1,6 @@
 "use client"
 
-import { useEffect } from "react"
+import { useEffect, useState } from "react"
 import { useParams, Link } from "react-router-dom"
 import { useDispatch, useSelector } from "react-redux"
 import { getGameDetails, clearCurrentGame } from "../../store/slices/gamesSlice"
@@ -14,6 +14,9 @@ export default function GamesDetails() {
     error: state.ui.error.gameDetails,
   }))
 
+  // Estado para favoritos
+  const [isFavorite, setIsFavorite] = useState(false)
+
   useEffect(() => {
     dispatch(getGameDetails(id))
 
@@ -22,6 +25,33 @@ export default function GamesDetails() {
       dispatch(clearCurrentGame())
     }
   }, [dispatch, id])
+
+  // Verificar si el juego está en favoritos
+  useEffect(() => {
+    if (currentGame) {
+      const storedFavorites = JSON.parse(localStorage.getItem("favorites")) || []
+      setIsFavorite(storedFavorites.some((fav) => fav.id === currentGame.id))
+    }
+  }, [currentGame])
+
+  // Función para alternar favoritos
+  const toggleFavorite = () => {
+    if (!currentGame) return
+
+    const storedFavorites = JSON.parse(localStorage.getItem("favorites")) || []
+    let newFavorites
+
+    if (isFavorite) {
+      // Remover de favoritos
+      newFavorites = storedFavorites.filter((fav) => fav.id !== currentGame.id)
+    } else {
+      // Añadir a favoritos
+      newFavorites = [...storedFavorites, currentGame]
+    }
+
+    localStorage.setItem("favorites", JSON.stringify(newFavorites))
+    setIsFavorite(!isFavorite)
+  }
 
   if (loading) {
     return (
@@ -51,10 +81,27 @@ export default function GamesDetails() {
               alt={game.name}
               className="w-full h-full object-cover"
             />
-            <div className="absolute inset-0 flex items-end">
+            <div className="absolute inset-0 flex items-end justify-between">
               <h1 className="text-4xl bg-gray-700 bg-opacity-60 rounded-md font-bold text-white py-3 px-4 m-4">
                 {game.name}
               </h1>
+
+              {/* Botón de favoritos */}
+              <button
+                onClick={toggleFavorite}
+                className={`m-4 p-3 rounded-full ${
+                  isFavorite ? "bg-yellow-400 text-gray-900" : "bg-gray-700 bg-opacity-60 text-white"
+                } hover:bg-yellow-500 transition-colors`}
+                aria-label={isFavorite ? "Quitar de favoritos" : "Añadir a favoritos"}
+              >
+                <svg xmlns="http://www.w3.org/2000/svg" className="h-6 w-6" viewBox="0 0 20 20" fill="currentColor">
+                  <path
+                    fillRule="evenodd"
+                    d="M3.172 5.172a4 4 0 015.656 0L10 6.343l1.172-1.171a4 4 0 115.656 5.656L10 17.657l-6.828-6.829a4 4 0 010-5.656z"
+                    clipRule="evenodd"
+                  />
+                </svg>
+              </button>
             </div>
           </div>
           <div className="p-6">
