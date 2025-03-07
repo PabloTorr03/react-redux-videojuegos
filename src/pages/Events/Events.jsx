@@ -16,6 +16,13 @@ function Events() {
 
   useEffect(() => {
     dispatch(getEvents())
+
+    // Verificar si hay un parámetro de filtro en la URL
+    const queryParams = new URLSearchParams(window.location.search)
+    const filterParam = queryParams.get("filter")
+    if (filterParam === "registered") {
+      setFilter("registered")
+    }
   }, [dispatch])
 
   const handleRegister = (eventId) => {
@@ -36,7 +43,9 @@ function Events() {
   return (
     <section className="p-5 bg-gray-800 min-h-screen">
       <div className="flex flex-col sm:flex-row items-center justify-between mb-6 space-y-4 sm:space-y-0">
-        <h1 className="font-rubiksh text-yellow-400 font-extrabold text-4xl">Eventos de Videojuegos</h1>
+        <h1 className="font-rubiksh text-yellow-400 font-extrabold text-4xl">
+          {filter === "registered" ? "Mis Eventos" : "Eventos de Videojuegos"}
+        </h1>
 
         <div className="flex space-x-2">
           <button
@@ -88,7 +97,7 @@ function Events() {
             <div key={event.id} className="bg-gray-700 rounded-xl shadow-lg overflow-hidden">
               <div className="relative h-48">
                 <img
-                  src={`/${event.image}`}
+                  src={event.image || "/placeholder.svg"}
                   alt={event.title}
                   className="w-full h-full object-cover"
                   onError={(e) => {
