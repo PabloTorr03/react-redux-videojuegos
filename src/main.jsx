@@ -15,6 +15,7 @@ import TagGames from "./pages/TagGames/TagGames"
 import GenreGames from "./pages/GenreGames/GenreGames.jsx"
 import ErrorPage from "./pages/ErrorPage/ErrorPage"
 import Favorites from "./pages/Favorites/Favorites"
+import Events from "./pages/Events/Events" // Añadida la importación de Events
 
 function AppLayout() {
   return (
@@ -39,6 +40,7 @@ const router = createBrowserRouter([
       { path: "/tag/:tag", element: <TagGames /> },
       { path: "/genre/:genre", element: <GenreGames /> },
       { path: "/favorites", element: <Favorites /> },
+      { path: "/events", element: <Events /> }, // Añadida la ruta para Events
     ],
   },
 ])

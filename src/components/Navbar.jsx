@@ -78,6 +78,14 @@ const Navbar = () => {
         >
           Favoritos
         </NavLink>
+        <NavLink
+          to="/events"
+          className={({ isActive }) =>
+            `block py-2 px-4 text-lg sm:text-2xl font-semibold ${isActive ? "text-gray-400" : "text-gray-200"} hover:text-gray-400 transition`
+          }
+        >
+          Eventos
+        </NavLink>
       </div>
     </nav>
   )

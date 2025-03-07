@@ -1,6 +1,7 @@
 import { createSlice } from "@reduxjs/toolkit"
 import { getGames, getGameDetails, getGamesByGenre, getGamesByTag } from "./gamesSlice"
 import { getPublishers, getPublisherDetails, getPublisherGames } from "./publishersSlice"
+import { getEvents } from "./eventsSlice"
 
 const initialState = {
   loading: {
@@ -10,6 +11,7 @@ const initialState = {
     gamesByTag: false,
     publishers: false,
     publisherDetails: false,
+    events: false, // Añadido para eventos
   },
   error: {
     games: null,
@@ -18,6 +20,7 @@ const initialState = {
     gamesByTag: null,
     publishers: null,
     publisherDetails: null,
+    events: null, // Añadido para eventos
   },
   pagination: {
     gamesCurrentPage: 1,
@@ -147,6 +150,19 @@ const uiSlice = createSlice({
       })
       .addCase(getPublisherGames.rejected, (state, action) => {
         state.loading.publisherDetails = false
+      })
+
+      // Events loading states
+      .addCase(getEvents.pending, (state) => {
+        state.loading.events = true
+        state.error.events = null
+      })
+      .addCase(getEvents.fulfilled, (state) => {
+        state.loading.events = false
+      })
+      .addCase(getEvents.rejected, (state, action) => {
+        state.loading.events = false
+        state.error.events = action.payload
       })
   },
 })
